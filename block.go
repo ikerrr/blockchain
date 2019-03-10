@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"crypto/sha256"
+	"encoding/binary"
+	"log"
 	"time"
 )
 
@@ -40,7 +43,14 @@ func NewBlock(preHash []byte,data string)*Block{
 }
 //辅助函数，将uint64转换成[]byte
 func Uint64ToBtye(num uint64)[]byte{
-	return []byte{}
+	var buffer bytes.Buffer
+	err :=binary.Write(&buffer,binary.BigEndian,num)
+	if err!=nil{
+		log.Panic(err)
+	}
+
+
+	return buffer.Bytes()
 }
 //3.生成哈希
 func (block *Block)SetHash(){
