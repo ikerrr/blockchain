@@ -38,7 +38,13 @@ func NewBlock(preHash []byte,data string)*Block{
 		Hash:[]byte{},
 		Data:[]byte(data),
 	}
-	block.SetHash()
+	//block.SetHash()
+	pow :=NewProofOfWork(&block)
+	hash,nonce:=pow.Run()
+
+	block.Hash=hash
+	block.Nonce=nonce
+
 	return &block
 }
 //辅助函数，将uint64转换成[]byte
@@ -54,8 +60,8 @@ func Uint64ToBtye(num uint64)[]byte{
 }
 //3.生成哈希
 func (block *Block)SetHash(){
+	/*
 	var blockInfo []byte
-
 	blockInfo=append(blockInfo,Uint64ToBtye(block.Version)...)
 	blockInfo=append(blockInfo,block.PreHash...)
 	blockInfo=append(blockInfo,block.MerkelRoot...)
@@ -63,6 +69,17 @@ func (block *Block)SetHash(){
 	blockInfo=append(blockInfo,Uint64ToBtye(block.Difficulty)...)
 	blockInfo=append(blockInfo,Uint64ToBtye(block.Nonce)...)
 	blockInfo=append(blockInfo,block.Data...)
+*/
+    temp:=[][]byte{
+		Uint64ToBtye(block.Version),
+		block.PreHash,
+		block.MerkelRoot,
+		Uint64ToBtye(block.TimeStamp),
+		Uint64ToBtye(block.Difficulty),
+		Uint64ToBtye(block.Nonce),
+		block.Data,
+	}
+    blockInfo:=bytes.Join(temp,[]byte{})
 
 	hash:=sha256.Sum256(blockInfo)
 	block.Hash=hash[:]
