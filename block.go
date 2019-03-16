@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/binary"
+	"encoding/gob"
 	"log"
 	"time"
 )
@@ -47,6 +48,29 @@ func NewBlock(preHash []byte,data string)*Block{
 
 	return &block
 }
+//序列化
+func (block *Block)Serialize()[]byte{
+	var buffer bytes.Buffer
+
+	encoder:=gob.NewEncoder(&buffer)
+	err :=encoder.Encode(&block)
+	if err!=nil{
+		log.Panic("编码错误！")
+	}
+
+	return buffer.Bytes()
+}
+//反序列化
+func Deserialize(data []byte)Block{
+	decoder:=gob.NewDecoder(bytes.NewReader(data))
+	var block Block
+	err:=decoder.Decode(&block)
+	if err!=nil{
+		log.Panic("解码错误！")
+	}
+	return block
+}
+
 //辅助函数，将uint64转换成[]byte
 func Uint64ToBtye(num uint64)[]byte{
 	var buffer bytes.Buffer
