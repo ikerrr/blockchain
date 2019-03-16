@@ -2,9 +2,9 @@ package main
 
 func main(){
      bc:=NewBlockChain()
-     bc.AddBlock("班长向班花转了50个BTC")
-     bc.AddBlock("班长又向班花转了50个BTC，向干嘛亚")
-     bc.AddBlock("呵呵哒")
+     bc.AddBlock("111111")
+     bc.AddBlock("222222")
+     bc.AddBlock("333333")
 
  /*
      for i,block:=range bc.blocks{

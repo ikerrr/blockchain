@@ -18,7 +18,7 @@ func NewProofOfWork(block *Block)*ProofOfWork{
 	pow :=ProofOfWork{
 		block:block,
 	}
-	targetStr :="0000100000000000000000000000000000000000000000000000000000000000"
+	targetStr :="0001100000000000000000000000000000000000000000000000000000000000"
 	tempInt :=big.Int{}
 	tempInt.SetString(targetStr,16)
 

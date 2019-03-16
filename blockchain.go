@@ -26,7 +26,7 @@ func NewBlockChain()*BlockChain  {
 	var lastHash []byte
 
 	db,err:=bolt.Open(blockChainDb,0600,nil)
-	defer db.Close()
+	//defer db.Close()
 	if err!=nil{
 		log.Panic("打开数据库失败")
 	}
@@ -36,7 +36,7 @@ func NewBlockChain()*BlockChain  {
 		if bucket==nil{
 
 			bucket,err = tx.CreateBucket([]byte(blockBucket))
-			if err !=nil{
+			if err ==nil{
 				fmt.Println("bucket创建失败")
 			}
 
@@ -64,10 +64,20 @@ func GenesisBlock()*Block{
 }
 //7.添加区块实现
 func (bc *BlockChain)AddBlock(data string) {
-/*	lastBlock := bc.blocks[len(bc.blocks)-1]
-	prevHash := lastBlock.Hash
+     db:=bc.db
+     lastHash:=bc.tail
 
-	block := NewBlock(prevHash, data)
-	bc.blocks = append(bc.blocks, block)
-*/
+     db.Update(func(tx *bolt.Tx) error {
+		 bucket:=tx.Bucket([]byte(blockBucket))
+		 if bucket==nil{
+		 	log.Panic("出错")
+		 }
+		 block:=NewBlock(lastHash,data)
+
+		 bucket.Put(block.Hash,block.Serialize())
+		 bucket.Put([]byte("LastHashKey"),block.Hash)
+
+		 bc.tail=block.Hash
+		 return nil
+	 })
 }
