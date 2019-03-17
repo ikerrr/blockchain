@@ -28,8 +28,9 @@ func NewProofOfWork(block *Block)*ProofOfWork{
 
 func (pow *ProofOfWork)Run()([]byte,uint64){
     var nonce uint64
+	var hash [32]byte
+
     block :=pow.block
-    var hash [32]byte
 
 	for   {
 		temp:=[][]byte{
