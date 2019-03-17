@@ -1,13 +1,20 @@
 package main
 
-import "fmt"
+
 
 func main() {
 	bc := NewBlockChain()
+	cli:=CLI{bc}
+	cli.Run()
+
+
+
+
+
+/*
 	bc.AddBlock("111111")
 	bc.AddBlock("222222")
 	bc.AddBlock("333333")
-
 	it := bc.NewIterator()
 	for {
 		block := it.Next()
@@ -20,7 +27,6 @@ func main() {
 		if len(block.PreHash)==0{
 			break
 		}
-
-	}
+	}*/
 
 }
